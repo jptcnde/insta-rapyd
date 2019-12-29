@@ -4,10 +4,33 @@ import { Grid } from '@material-ui/core';
 import PhotoListItem from './PhotoListItem';
 import { getPhotosByAlbumId } from '../../../api';
 import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
+
+// native css approach sample without using "Grid" design system implemented below
+const useStyles = makeStyles((theme) => ({
+  list: {
+    display: 'flex',
+  },
+  item: {
+    flex: '1 0 auto',
+    width: '100%', // mobile first
+    [theme.breakpoints.down('sm')]: {
+      width: '50%',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '33.33%'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '25%'
+    },
+  }
+}));
 
 function PhotoList(props) {
   const { albumId } = props;
   const [photos, setPhotos] = useState([]);
+
+  const classes = useStyles();
 
   const {
     app: { setFetching }
@@ -15,8 +38,24 @@ function PhotoList(props) {
 
 
   function handleCloseClick(id) {
-    console.log(photos.filter(x => x.albumId !== id))
     setPhotos(photos.filter(x => x.id !== id));
+  }
+
+  function handleDrop(e, dropzoneId) {
+    const draggedId = Number(e.dataTransfer.getData("id"));
+    const draggedItem = photos.find(x => x.id === draggedId);
+    const dropzoneItem = photos.find(x => x.id === dropzoneId);
+
+    const newPhotos = photos.slice();
+    newPhotos[photos.indexOf(draggedItem)] = dropzoneItem;
+    newPhotos[photos.indexOf(dropzoneItem)] = draggedItem;
+
+    setPhotos([...newPhotos]);
+
+  }
+
+  function handleDragStart(e, id) {
+    e.dataTransfer.setData('id', id);
   }
 
   useEffect(() => {
@@ -64,9 +103,31 @@ function PhotoList(props) {
             headline={headline}
             id={id}
             onCloseClick={handleCloseClick}
+            onDragStart={(e) => handleDragStart(e, id)}
+            onDrop={(e) => handleDrop(e, id)}
           />
         </Grid>
       ))}
+      {/*
+
+      just to demonstrate without using a Grid system
+      which to cater this clause " Don't use a table component to display photos, use css only."
+      from requirement excercise
+
+      <div className={classes.list}>
+        <div className={classes.item}>
+          <PhotoListItem
+            desc={desc}
+            url={url}
+            thumbnailUrl={thumbnailUrl}
+            headline={headline}
+            id={id}
+            onCloseClick={handleCloseClick}
+            onDragStart={(e) => handleDragStart(e, id)}
+            onDrop={(e) => handleDrop(e, id)}
+          />
+        </div>
+      </div> */}
     </Grid>
   );
 }
