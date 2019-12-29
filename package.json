@@ -1,7 +1,8 @@
 {
-  "name": "kyra-spa-react-boilerplate",
+  "name": "insta-rapyd",
   "version": "0.1.0",
-  "private": true,
+  "description": "photo album rapyd exercise",
+  "private": false,
   "author": {
     "name": "jptcnde",
     "email": "jptcnde@gmail.com"
@@ -11,7 +12,10 @@
     "javascript",
     "material-ui",
     "testing-library",
-    "jest"
+    "jest",
+    "rematch",
+    "CSS in JS",
+    "redux"
   ],
   "scripts": {
     "start": "react-scripts start",
