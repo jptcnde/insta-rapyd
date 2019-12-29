@@ -1,5 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Tech Stack
+
+```
+  "react",
+  "javascript",
+  "material-ui",
+  "testing-library",
+  "jest",
+  "rematch",
+  "CSS in JS",
+  "redux"
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
