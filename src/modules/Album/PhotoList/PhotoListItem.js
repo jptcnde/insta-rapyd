@@ -37,6 +37,8 @@ function PhotoListItem(props) {
     headline,
     onCloseClick,
     id,
+    onDrop,
+    onDragStart
   } = props;
 
   const classes = useStyles();
@@ -58,7 +60,12 @@ function PhotoListItem(props) {
 
   return (
     <>
-      <div className={classes.root}>
+      <div
+        draggable
+        onDragOver={(e) => e.preventDefault()}
+        onDragStart={onDragStart}
+        onDrop={onDrop}
+        className={classes.root}>
         <IconButton
           onClick={() => onCloseClick(id)}
           className={classes.closeBtn}>
@@ -72,7 +79,7 @@ function PhotoListItem(props) {
           onMouseLeave={handlePhotoMouseLeave}
           onClick={handlePhotoClick}
         />
-        <PhotoDescriptionBar desc={desc} open={descBarOpen} />
+        <PhotoDescriptionBar desc={`${desc}-${id}`} open={descBarOpen} />
       </div>
       <PhotoViewDialog onClose={() => setViewDialogOpen(false)} url={url} open={viewDialogOpen} />
     </>
@@ -86,6 +93,8 @@ PhotoListItem.propTypes = {
   thumbnailUrl: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   onCloseClick: PropTypes.func.isRequired,
+  onDrop: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
 };
 
 export default PhotoListItem;
